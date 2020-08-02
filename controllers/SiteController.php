@@ -9,6 +9,8 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\user\User;
+use yii\bootstrap\Alert;
 
 class SiteController extends Controller
 {
@@ -61,29 +63,21 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
-    }
+        try {
+            $model = new LoginForm();
 
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            if ($model->load(Yii::$app->request->post()) && $model->login()) {
+
+                return $this->render('/site/home');
+
+            }
+
+            return $this->render('index', [
+                'model' => $model,
+            ]);
+        } catch (\Exception $ex) {
+            throw $ex;
         }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-
-        $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -97,6 +91,28 @@ class SiteController extends Controller
 
         return $this->goHome();
     }
+
+    /**
+     * Inicia sesion.
+     *
+     * @return Response
+     */
+    public function actionSignUp()
+    {
+        $model = new User();
+
+        if ($model->load(Yii::$app->request->post())) {
+            try {
+                User::registrar($model);
+            } catch (\Exception $ex) {
+            }
+        }
+
+        return $this->render('sign-up', [
+            'model' => $model
+        ]);
+    }
+
 
     /**
      * Displays contact page.
