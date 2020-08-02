@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\base\Comentario;
+use app\models\base\CommentForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -10,7 +12,6 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\user\User;
-use yii\bootstrap\Alert;
 
 class SiteController extends Controller
 {
@@ -63,21 +64,32 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $model = new LoginForm();
         try {
-            $model = new LoginForm();
 
             if ($model->load(Yii::$app->request->post()) && $model->login()) {
 
-                return $this->render('/site/home');
-
+                return $this->actionHome();
             }
-
-            return $this->render('index', [
-                'model' => $model,
-            ]);
         } catch (\Exception $ex) {
             throw $ex;
         }
+
+        return $this->render('index', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionHome()
+    {
+        $user = Yii::$app->user;
+        $model = new CommentForm();
+        $comentarios = Comentario::getByEntityId($user->getId());
+
+        return $this->render('/site/home', [
+            'model' => $model,
+            'comentarios' => $comentarios
+        ]);
     }
 
     /**
