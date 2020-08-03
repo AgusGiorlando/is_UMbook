@@ -4,7 +4,7 @@ namespace app\models\base;
 
 use yii\base\Model;
 
-class CommentForm extends Model
+class NuevoComentarioForm extends Model
 {
     public $id_usuario;
     public $id_autor;

@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use app\models\base\Comentario;
-use app\models\base\CommentForm;
+use app\models\base\NuevoComentarioForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -69,7 +69,7 @@ class SiteController extends Controller
 
             if ($model->load(Yii::$app->request->post()) && $model->login()) {
 
-                return $this->actionHome();
+                return $this->actionMuro();
             }
         } catch (\Exception $ex) {
             throw $ex;
@@ -80,10 +80,13 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionHome()
+    public function actionMuro()
     {
         $user = Yii::$app->user;
-        $model = new CommentForm();
+        if ($user->isGuest) {
+            $this->redirect('index');
+        }
+        $model = new NuevoComentarioForm();
         $aComentariosQuery = Comentario::getByEntityId($user->getId());
         $comentarios = [];
 
@@ -95,7 +98,7 @@ class SiteController extends Controller
             array_push($comentarios, $item);
         }
         
-        return $this->render('/site/home', [
+        return $this->render('/site/muro', [
             'model' => $model,
             'comentarios' => $comentarios
         ]);
@@ -118,7 +121,7 @@ class SiteController extends Controller
      *
      * @return Response
      */
-    public function actionSignUp()
+    public function actionRegistro()
     {
         $model = new User();
 
@@ -129,37 +132,8 @@ class SiteController extends Controller
             }
         }
 
-        return $this->render('sign-up', [
+        return $this->render('registro', [
             'model' => $model
         ]);
-    }
-
-
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
     }
 }

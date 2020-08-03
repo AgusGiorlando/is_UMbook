@@ -8,7 +8,6 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\Url;
 
 /**
  * ComentarioController implements the CRUD actions for Comentario model.
@@ -28,43 +27,15 @@ class ComentarioController extends Controller
     }
 
     /**
-     * Lists all Comentario models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Comentario::find(),
-        ]);
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Displays a single Comentario model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
      * Creates a new Comentario model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionNuevo()
     {
         $model = new Comentario();
 
-        if ($form = Yii::$app->request->post()['CommentForm']) {
+        if ($form = Yii::$app->request->post()['NuevoComentarioForm']) {
             try {
                 $user = Yii::$app->user;
                 $model->contenido = $form['contenido'];
@@ -72,8 +43,8 @@ class ComentarioController extends Controller
                 $model->id_usuario = $user->getId();
 
                 Comentario::guardar($model);
-                
-                return $this->redirect(['site/home']);
+
+                return $this->redirect(['site/muro']);
             } catch (\Exception $ex) {
                 throw $ex;
             }
@@ -111,11 +82,11 @@ class ComentarioController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionEliminar($id)
     {
         Comentario::borrar($id);
 
-        return $this->redirect(['site/home']);
+        return $this->redirect(['site/muro']);
     }
 
     /**

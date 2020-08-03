@@ -7,7 +7,7 @@ use yii\bootstrap\ActiveForm;
 
 $this->title = 'UMbook - Registro';
 ?>
-<div class="site-sign-up">
+<div class="site-registro">
     <h1>Registro</h1>
     <?php $form = ActiveForm::begin([
         'id' => 'login-form',

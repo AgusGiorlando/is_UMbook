@@ -9,14 +9,14 @@ use yii\helpers\Url;
 
 $this->title = 'UMbook';
 ?>
-<div class="site-home">
+<div class="site-muro">
     <div class="container">
         <div>
             <div class="card text-white bg-primary" style="padding: 20px;">
                 <h4 class="card-title">Nuevo comentario</h4>
                 <div class="card-body">
                     <?php $form = ActiveForm::begin([
-                        'action' => ['comentario/create'],
+                        'action' => ['comentario/nuevo'],
                         'method' => 'POST',
                         'id' => 'comment-form',
                         'layout' => 'horizontal',
@@ -51,7 +51,7 @@ $this->title = 'UMbook';
                             </div>
                             <div class="col-6">
                                 <?php if ($item['propio'] == true) : ?>
-                                    <?= Html::a('Eliminar', ['comentario/delete', 'id' => $item['id_comentario']], ['class' => 'btn btn-danger']) ?>
+                                    <?= Html::a('Eliminar', ['comentario/eliminar', 'id' => $item['id_comentario']], ['class' => 'btn btn-danger']) ?>
                                 <?php endif; ?>
                             </div>
                         </div>

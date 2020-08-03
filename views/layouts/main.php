@@ -32,7 +32,7 @@ AppAsset::register($this);
     NavBar::begin([
         //'brandLabel' => Yii::$app->name,
         'brandLabel' => 'UMbook',
-        'brandUrl' => Url::to('site/home'),
+        'brandUrl' => Url::to('site/muro'),
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
@@ -40,11 +40,8 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/home']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
+                ['label' => 'Login', 'url' => ['/user/create']]
             ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
