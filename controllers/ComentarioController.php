@@ -23,9 +23,6 @@ class ComentarioController extends Controller
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
             ],
         ];
     }
@@ -116,9 +113,9 @@ class ComentarioController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        Comentario::borrar($id);
 
-        return $this->redirect(['index']);
+        return $this->redirect(['site/home']);
     }
 
     /**

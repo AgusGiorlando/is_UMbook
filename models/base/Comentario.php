@@ -55,12 +55,26 @@ class Comentario extends \yii\db\ActiveRecord
         }
     }
 
+    public static function borrar($id_comentario)
+    {
+        try {
+            $comentario = self::findOne([
+                'id_comentario' => $id_comentario
+            ]);
+
+            $comentario->delete();
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
+    }
+
     public static function getByEntityId($entity_id)
     {
         $query = new \yii\db\Query();
         $query->from(['c' => 'comentario'])
-            ->select(['c.contenido', 'u.nombre', 'u.apellido'])
+            ->select(['c.id_comentario', 'c.contenido', 'c.id_autor', 'u.nombre', 'u.apellido'])
             ->innerJoin(['u' => 'user'], '`c`.`id_autor` = `u`.`id_usuario`')
+            ->where(['c.id_usuario' => $entity_id])
             ->all();
         return $query->all();
     }

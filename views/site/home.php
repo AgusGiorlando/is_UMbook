@@ -27,7 +27,7 @@ $this->title = 'UMbook';
                     ]); ?>
 
                     <?= $form->field($model, 'contenido')->textarea(array('style' => 'width: 1000px; height: 80px;'))->label((false)) ?>
-                    <?= Html::submitButton('Comentar', ['class' => 'btn btn-warning', 'name' => 'comment-button']) ?>
+                    <?= Html::submitButton('Comentar', ['class' => 'btn btn-success', 'name' => 'comment-button']) ?>
 
                     <?php ActiveForm::end(); ?>
                 </div>
@@ -39,14 +39,21 @@ $this->title = 'UMbook';
                 <div class="card text-white bg-info" style="padding: 20px;">
                     <div class="card-body">
                         <div class="row">
-                            <p>
-                                <?= sprintf(
-                                    '<b>%s %s</b>: %s',
-                                    $item['nombre'],
-                                    $item['apellido'],
-                                    $item['contenido']
-                                ) ?>
-                            </p>
+                            <div class="col-6">
+                                <p>
+                                    <?= sprintf(
+                                        '<b>%s %s</b>: %s',
+                                        $item['nombre'],
+                                        $item['apellido'],
+                                        $item['contenido']
+                                    ) ?>
+                                </p>
+                            </div>
+                            <div class="col-6">
+                                <?php if ($item['propio'] == true) : ?>
+                                    <?= Html::a('Eliminar', ['comentario/delete', 'id' => $item['id_comentario']], ['class' => 'btn btn-danger']) ?>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
                 </div>

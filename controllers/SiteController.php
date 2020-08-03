@@ -84,8 +84,17 @@ class SiteController extends Controller
     {
         $user = Yii::$app->user;
         $model = new CommentForm();
-        $comentarios = Comentario::getByEntityId($user->getId());
+        $aComentariosQuery = Comentario::getByEntityId($user->getId());
+        $comentarios = [];
 
+        foreach ($aComentariosQuery as $item) {
+            $item['propio'] = false;
+            if ($item['id_autor'] == $user->id) {
+                $item['propio'] = true;
+            }
+            array_push($comentarios, $item);
+        }
+        
         return $this->render('/site/home', [
             'model' => $model,
             'comentarios' => $comentarios
