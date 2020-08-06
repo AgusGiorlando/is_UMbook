@@ -2,15 +2,13 @@
 
 namespace app\models\base;
 
-use Yii;
-use yii\db\Query;
-
 /**
  * This is the model class for table "comentario".
  *
  * @property int $id_comentario
- * @property int|null $id_usuario
- * @property int|null $id_autor
+ * @property int $id_usuario
+ * @property int $id_autor
+ * @property int|null $id_foto 
  * @property string|null $contenido
  */
 class Comentario extends \yii\db\ActiveRecord
@@ -68,13 +66,13 @@ class Comentario extends \yii\db\ActiveRecord
         }
     }
 
-    public static function getByEntityId($entity_id)
+    public static function getByUsuarioId($id_usuario)
     {
         $query = new \yii\db\Query();
         $query->from(['c' => 'comentario'])
             ->select(['c.id_comentario', 'c.contenido', 'c.id_autor', 'u.nombre', 'u.apellido'])
             ->innerJoin(['u' => 'user'], '`c`.`id_autor` = `u`.`id_usuario`')
-            ->where(['c.id_usuario' => $entity_id])
+            ->where(['c.id_usuario' => $id_usuario])
             ->all();
         return $query->all();
     }

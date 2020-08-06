@@ -87,7 +87,7 @@ class SiteController extends Controller
             $this->redirect('index');
         }
         $model = new NuevoComentarioForm();
-        $aComentariosQuery = Comentario::getByEntityId($user->getId());
+        $aComentariosQuery = Comentario::getByUsuarioId($user->getId());
         $comentarios = [];
 
         foreach ($aComentariosQuery as $item) {

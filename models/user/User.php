@@ -112,6 +112,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         try {
             $user->save();
+            
+            return true;
         } catch (\Exception $ex) {
             throw $ex;
         }
